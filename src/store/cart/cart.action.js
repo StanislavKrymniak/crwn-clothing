@@ -47,8 +47,35 @@ const addCartItem = (cartItems, productToAdd) => {
 
 
 const removeCartItem = (cartItems, cartItemToRemove) => {
-    const existingCartItem = cartItems.find((cartItem) => cartItem.id === cartItemToRemove.id)
+    const existingCartItem = cartItems.find((cartItem) => cartItem.id === cartItemToRemove.id);
 
+    if (!existingCartItem) {
+        return cartItems; // If item not found, return current cartItems
+    }
+
+    const updatedCartItems = cartItems
+        .map((cartItem) =>
+            cartItem.id === cartItemToRemove.id
+                ? { ...cartItem, quantity: cartItem.quantity - 1 } // Decrement quantity
+                : cartItem
+        )
+        .filter((item) => item.quantity > 0); // Remove items with quantity <= 0
+
+    return updatedCartItems;
+};
+
+const clearCartItem = (cartItems,cartItemToClear) => {
+    return cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id)
+}
+
+
+
+
+/*
+
+const removeCartItem = (cartItems, cartItemToRemove) => {
+    const existingCartItem = cartItems.find((cartItem) => cartItem.id === cartItemToRemove.id)
+    
 
     if (existingCartItem.quantity === 1) {
         return cartItems.filter((cartItem) => cartItem.id !== cartItemToRemove.id);
@@ -62,7 +89,4 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
     );
 };
 
-
-const clearCartItem = (cartItems,cartItemToClear) => {
-    return cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id)
-}
+*/
